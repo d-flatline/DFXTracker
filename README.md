@@ -7,16 +7,22 @@ pattern editor and an FL-style step sequencer. Imports and exports ProTracker
 This repository exists to hand out a build for testing. **Grab the APK from
 [Releases](../../releases).**
 
-## Read this first
+## Status
 
-**This build has never been run.** Not on a device, not on an emulator. The C++
-core is heavily tested on a host — 4,746 assertions, a mutation fuzzer, a
-threading check, a byte-exact export round trip — and the Android layer
-compiles clean against the NDK with its JNI surface verified symbol by symbol.
-None of that tells you whether it launches.
+**It runs, and it makes sound.** Confirmed on an Android phone: a ProTracker
+`M.K.` module loads through the system picker, plays through Oboe, and the
+pattern grid follows it.
 
-So: if it crashes on the first tap, that is the expected class of outcome, not a
-surprise. What is worth capturing is *where*.
+That was not a given. The C++ core was heavily tested on a host — 4,746
+assertions, a mutation fuzzer, a threading check, a byte-exact export round
+trip — and the Android layer compiles clean against the NDK with its JNI
+surface verified symbol by symbol. None of that says the app starts, and until
+someone ran it, nobody knew.
+
+What the build could not catch was the interface. Two rounds of screenshots
+found a grid that spent the whole screen height on five rows, chrome that
+wrapped onto four lines, and a stray caret drawn along the top edge — none of
+which is a compile error. See the release notes for what changed.
 
 ## Installing
 
