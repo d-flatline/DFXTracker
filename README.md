@@ -1,0 +1,55 @@
+# DFX Tracker — test build
+
+A pattern tracker for Android with two views onto one song: a RAD-style VGA
+pattern editor and an FL-style step sequencer. Imports and exports ProTracker
+`.MOD` and ScreamTracker 3 `.S3M`, and renders to `.WAV`.
+
+This repository exists to hand out a build for testing. **Grab the APK from
+[Releases](../../releases).**
+
+## Read this first
+
+**This build has never been run.** Not on a device, not on an emulator. The C++
+core is heavily tested on a host — 4,746 assertions, a mutation fuzzer, a
+threading check, a byte-exact export round trip — and the Android layer
+compiles clean against the NDK with its JNI surface verified symbol by symbol.
+None of that tells you whether it launches.
+
+So: if it crashes on the first tap, that is the expected class of outcome, not a
+surprise. What is worth capturing is *where*.
+
+## Installing
+
+- **Android 7.0 (API 24) or newer**, `arm64-v8a` or `x86_64`.
+- Debug build, signed with the standard Android debug key. Your phone will ask
+  you to allow installs from whatever app you downloaded it with.
+- No permissions are requested. There is no `INTERNET` permission and no
+  storage permission — files are opened through the system picker, so the app
+  only ever sees what you hand it.
+- The app is **landscape-locked**; a tracker grid needs the width.
+
+## Using it
+
+Open a module with the file button, or tap a `.mod`/`.s3m` in any file manager
+and pick DFX Tracker. If you have nothing to hand, any ProTracker `.mod` from
+[modarchive.org](https://modarchive.org) will do.
+
+Working: MOD and S3M import, both editor views, cell editing with undo,
+playback, same-format export, and WAV render.
+
+Not built yet: the instrument/sample editor, project save/load, and XM/IT.
+AdLib/OPL instruments in an S3M are parsed and preserved but **silent** — there
+is no OPL2 emulator yet, and the UI says so rather than pretending.
+
+## If something goes wrong
+
+The useful things to report, roughly in order:
+
+1. **It did not install** — the phone's exact wording.
+2. **It installed but died on launch** — `adb logcat` around the crash, or a
+   screenshot of the dialog. A failure to load the native library shows up as
+   `UnsatisfiedLinkError`.
+3. **It runs but the audio is wrong** — crackling, stuttering, silence, or
+   wrong notes. Which, and on which module.
+4. **It runs and the audio is fine** — then say so, because that is the single
+   most informative outcome available right now.
